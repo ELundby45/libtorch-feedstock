@@ -185,13 +185,15 @@ requirements:
     - {{ pin_compatible('intel-openmp') }}   # [blas_impl == "mkl"]
 
 test:
-  imports:
-    - ml_dtypes
-  requires:
-    - pip
   commands:
-    - pip check
-    # Maintainers dropped tests from source builds, we may want to build from source if problems are found.
+    # libraries
+    {% for each_lib in [ 'libc10', 'libshm', 'libtorch', 'libtorch_cpu', 'libtorch_global_deps'] %}
+    - test -f $PREFIX/lib/{{ each_lib }}.so     # [linux]
+    - test -f $PREFIX/lib/{{ each_lib }}.dylib  # [osx]
+    {% endfor %}
+    {% for each_lib in ['libc10_cuda', 'libcaffe2_nvrtc', 'libtorch_cuda', 'libtorch_cuda_linalg'] %}
+    - test -f $PREFIX/lib/{{ each_lib }}.so     # [linux and (gpu_variant or "").startswith("cuda")]
+    {% endfor %}
 
 about:
   home: https://pytorch.org/
