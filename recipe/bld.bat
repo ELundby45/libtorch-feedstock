@@ -100,6 +100,7 @@ set "USE_SYSTEM_SLEEF=OFF"
 :: duplicate symbols at link time.
 :: set "BUILD_CUSTOM_PROTOBUF=OFF"
 set C10_BUILD_SHARED_LIBS=1
+set BUILD_SHARED_LIBS=1
 
 rm -rf build
 
